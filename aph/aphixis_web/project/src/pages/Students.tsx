@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus } from 'lucide-react';
+import { Plus, Search } from 'lucide-react';
 import { initializeApp } from "firebase/app";
 import {
   getFirestore,
@@ -37,6 +37,8 @@ const db = getFirestore(app);
 
 export default function Students() {
   const [students, setStudents] = useState([]);
+  const [filteredStudents, setFilteredStudents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingStudent, setEditingStudent] = useState(null);
@@ -51,6 +53,16 @@ export default function Students() {
     fetchStudents();
   }, []);
 
+  // Filtrar estudiantes cuando cambie la búsqueda o la lista de estudiantes
+  useEffect(() => {
+    const filtered = students.filter(student => 
+      student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      student.facultad.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredStudents(filtered);
+  }, [searchQuery, students]);
+
   // Fetch all students
   const fetchStudents = async () => {
     setIsLoading(true);
@@ -61,6 +73,7 @@ export default function Students() {
         ...doc.data(),
       }));
       setStudents(studentsList);
+      setFilteredStudents(studentsList);
     } catch (error) {
       console.error("Error al cargar estudiantes:", error);
     } finally {
@@ -138,6 +151,20 @@ export default function Students() {
         </button>
       </div>
 
+      {/* Barra de búsqueda */}
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Search className="h-5 w-5 text-gray-400" />
+        </div>
+        <input
+          type="text"
+          placeholder="Buscar estudiante..."
+          className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -146,14 +173,15 @@ export default function Students() {
                 {["ID", "Nombre", "Email", "Facultad", "Fecha de Inscripción", "Acciones"].map((header) => (
                   <th 
                     key={header} 
-                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                  >
                     {header}
                   </th>
                 ))}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {students.map((student) => (
+              {filteredStudents.map((student) => (
                 <tr key={student.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{student.id}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{student.name}</td>
@@ -181,15 +209,15 @@ export default function Students() {
         </div>
       </div>
 
-
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
+        <DialogContent className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
+        aria-hidden="true"
+        style={{ position: 'fixed', margin: 0 }}>
           <div className="bg-white rounded-3xl shadow-lg w-full max-w-md p-6 relative">
-            {/* Botón de cerrar con X en la parte superior derecha */}
             <button
               type="button"
               onClick={() => setIsDialogOpen(false)}
-              className="absolute top-2 right-2 text-gray-600 hover:text-gray-800 text-2xl"
+              className="absolute top-4 right-6 text-gray-600 hover:text-gray-800 text-2xl"
             >
               &times;
             </button>
@@ -218,7 +246,7 @@ export default function Students() {
                     id={field}
                     name={field}
                     type={field === "enrollmentDate" ? "date" : "text"}
-                    className="mt-1 w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                    className="mt-1 w-full rounded-xl border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-100"
                     value={formData[field]}
                     onChange={handleInputChange}
                     required={field !== "enrollmentDate"}
@@ -244,7 +272,6 @@ export default function Students() {
           </div>
         </DialogContent>
       </Dialog>
-
     </div>
   );
 }

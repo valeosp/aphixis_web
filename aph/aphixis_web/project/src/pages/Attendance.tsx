@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar } from 'lucide-react';
+import { Calendar, Search } from 'lucide-react';
 import AttendanceModal from '../components/modals/AttendanceModal';
 import {
   initializeApp
@@ -39,6 +39,8 @@ interface Attendance {
 
 export default function AttendancePage() {
   const [attendanceRecords, setAttendanceRecords] = useState<Attendance[]>([]);
+  const [filteredRecords, setFilteredRecords] = useState<Attendance[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedRecord, setSelectedRecord] = useState<Attendance | undefined>(undefined);
   const [timeFilter, setTimeFilter] = useState<'week' | 'month' | 'year'>('week');
@@ -51,10 +53,22 @@ export default function AttendancePage() {
         ...doc.data()
       })) as Attendance[];
       setAttendanceRecords(records);
+      setFilteredRecords(records);
     };
 
     fetchAttendance();
   }, []);
+
+  // Efecto para filtrar registros cuando cambia la búsqueda o los registros
+  useEffect(() => {
+    const filtered = filterRecords().filter(record =>
+      record.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      record.studentId.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      record.date.includes(searchQuery) ||
+      record.status.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredRecords(filtered);
+  }, [searchQuery, attendanceRecords, timeFilter]);
 
   const handleNewAttendance = () => {
     setSelectedRecord(undefined);
@@ -137,6 +151,20 @@ export default function AttendancePage() {
         </div>
       </div>
 
+      {/* Barra de búsqueda */}
+      <div className="relative">
+        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+          <Search className="h-5 w-5 text-gray-400" />
+        </div>
+        <input
+          type="text"
+          placeholder="Buscar por nombre, ID, fecha o estado..."
+          className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+        />
+      </div>
+
       <div className="bg-white shadow rounded-lg overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
@@ -151,7 +179,7 @@ export default function AttendancePage() {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {filterRecords().map((record) => (
+              {filteredRecords.map((record) => (
                 <tr key={record.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{record.studentId}</td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{record.studentName}</td>
