@@ -20,6 +20,7 @@ interface DataContextType {
 const DataContext = createContext<DataContextType | null>(null);
 
 export const DataProvider = ({ children }: { children: React.ReactNode }) => {
+  /* Algunos datos quemados antes de implementar base de datos en firebase */
   const [students, setStudents] = useState<Student[]>([
     { id: '1', name: 'Ana García', email: 'ana@example.com', course: 'Ingeniería', enrollmentDate: '2024-01-15' },
     { id: '2', name: 'Carlos López', email: 'carlos@example.com', course: 'Medicina', enrollmentDate: '2024-01-16' },

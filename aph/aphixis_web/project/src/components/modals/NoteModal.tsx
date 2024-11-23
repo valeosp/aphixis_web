@@ -36,13 +36,13 @@ export default function NoteModal({ isOpen, onClose, onSubmit, note }: NoteModal
 
   return (
     <>
-      {/* Backdrop overlay */}
+      {/* Fondo un poco opaco */}
       <div
         className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
         aria-hidden="true"
         style={{ position: 'fixed', margin: 0 }}
       />
-      {/* Modal container */}   
+      {/* Contenedor del Modal */}   
       <div className="fixed inset-0 flex items-center justify-center p-4 z-50">
         <div className="bg-white rounded-2xl max-w-md w-full p-6">
           <div className="flex justify-between items-center mb-4">

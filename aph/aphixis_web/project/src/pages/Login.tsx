@@ -26,17 +26,17 @@ export default function Login() {
     }
   };
 
-  // Generate random bubbles with improved variety
+  // Efecto de burbujas aleatorias
   const renderBubbles = () => {
     const bubbles = [];
-    const bubbleCounts = 40; // Reduced number of bubbles for better performance
+    const bubbleCounts = 40; 
 
     for (let i = 0; i < bubbleCounts; i++) {
-      const size = Math.random() * 60 + 20; // Larger size range
+      const size = Math.random() * 60 + 20; 
       const initialLeft = Math.random() * 100;
-      const initialDelay = Math.random() * 15; // More varied delays
-      const duration = Math.random() * 10 + 15; // Longer animation durations
-      const opacity = Math.random() * 0.2 + 0.1; // More subtle opacity
+      const initialDelay = Math.random() * 15; 
+      const duration = Math.random() * 10 + 15; 
+      const opacity = Math.random() * 0.2 + 0.1; 
 
       bubbles.push(
         <div 
@@ -46,12 +46,12 @@ export default function Login() {
             width: `${size}px`,
             height: `${size}px`,
             left: `${initialLeft}%`,
-            bottom: `-${size}px`, // Start from bottom
+            bottom: `-${size}px`, 
             animationDelay: `${initialDelay}s`,
             animationDuration: `${duration}s`,
             opacity: opacity,
             backgroundColor: `rgba(255, 255, 255, ${opacity})`,
-            filter: 'blur(1px)', // Soft blur effect
+            filter: 'blur(1px)', 
           }}
         />
       );
@@ -61,12 +61,12 @@ export default function Login() {
 
   return (
     <div className="relative min-h-screen bg-gradient-to-br from-blue-500 to-blue-600 overflow-hidden">
-      {/* Bubble Background */}
+      {/* estilod de burbujas */}
       <div className="absolute inset-0 bubble-container">
         {renderBubbles()}
       </div>
 
-      {/* Login Container */}
+      {/* Contenedor del login */}
       <div className="relative z-10 min-h-screen flex items-center justify-center p-4">
         <div className="max-w-md w-full space-y-8 bg-white/90 p-10 rounded-2xl shadow-xl backdrop-blur-sm">
           <div className="text-center">
@@ -122,7 +122,7 @@ export default function Login() {
         </div>
       </div>
 
-      {/* Enhanced styles for bubbles */}
+      {/* Estilos para las burbujas */}
       <style jsx>{`
         .bubble-container {
           z-index: 1;

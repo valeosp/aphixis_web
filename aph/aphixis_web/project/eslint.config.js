@@ -26,3 +26,5 @@ export default tseslint.config(
     },
   }
 );
+
+/*Configuración ESLint para TS analiza mi codigo para encontrar errores y advertencias*/

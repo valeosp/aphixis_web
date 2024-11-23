@@ -12,7 +12,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   const login = async (username: string, password: string) => {
-    // In a real app, you would validate credentials against a backend
+    // Validación de credenciales
     if (username === 'admin' && password === 'password') {
       setIsAuthenticated(true);
       return true;

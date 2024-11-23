@@ -20,7 +20,7 @@ export default function Layout() {
 
   return (
     <div className="min-h-screen bg-gray-50 flex">
-      {/* Sidebar */}
+      {/* barra lateral */}
       <div className="w-64 bg-white shadow-xl">
         <div className="h-full flex flex-col">
           <div className="flex-1 flex flex-col pt-5 pb-4 overflow-y-auto">
@@ -94,7 +94,7 @@ export default function Layout() {
         </div>
       </div>
 
-      {/* Main content */}
+      {/* diseño principal */}
       <div className="flex-1 flex flex-col overflow-hidden">
         <main className="flex-1 overflow-y-auto bg-gray-50 p-6">
           <Outlet />

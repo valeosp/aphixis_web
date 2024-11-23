@@ -31,7 +31,7 @@ const firebaseConfig = {
   appId: "1:211828562391:web:af8091e84727d569191392",
 };
 
-// Initialize Firebase
+// fire
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
@@ -53,7 +53,7 @@ export default function Students() {
     fetchStudents();
   }, []);
 
-  // Filtrar estudiantes cuando cambie la búsqueda o la lista de estudiantes
+  // Filtrar estudiantes 
   useEffect(() => {
     const filtered = students.filter(student => 
       student.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -63,7 +63,7 @@ export default function Students() {
     setFilteredStudents(filtered);
   }, [searchQuery, students]);
 
-  // Fetch all students
+  
   const fetchStudents = async () => {
     setIsLoading(true);
     try {
@@ -81,13 +81,13 @@ export default function Students() {
     }
   };
 
-  // Handle form input changes
+  
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Add or update a student
+  
   const handleSaveStudent = async (e) => {
     e.preventDefault();
     try {
@@ -106,7 +106,7 @@ export default function Students() {
     }
   };
 
-  // Delete a student
+  
   const handleDeleteStudent = async (id) => {
     if (window.confirm('¿Estás seguro de eliminar este estudiante?')) {
       try {
@@ -118,7 +118,7 @@ export default function Students() {
     }
   };
 
-  // Open dialog for editing or creating
+  
   const openDialog = (student = null) => {
     setEditingStudent(student);
     setFormData(
@@ -127,7 +127,7 @@ export default function Students() {
     setIsDialogOpen(true);
   };
 
-  // Close dialog and reset data
+  
   const closeDialog = () => {
     setEditingStudent(null);
     setFormData({ name: '', email: '', facultad: '', enrollmentDate: '' });
@@ -208,7 +208,7 @@ export default function Students() {
           </table>
         </div>
       </div>
-
+      
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
         aria-hidden="true"

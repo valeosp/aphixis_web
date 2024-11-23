@@ -50,13 +50,13 @@ export default function Dashboard() {
       const present = records.filter((rec) => rec.status === "present").length;
       const absent = records.length - present;
 
-      // Set data for distribution chart
+      // Preparar datos para la distribución de asistencias
       setDistributionData([
         { name: "Presente", value: present },
         { name: "Ausente", value: absent },
       ]);
 
-      // Prepare monthly trend data
+      // Preparar datos para la tendencia mensual
       const monthlyData = records.reduce((acc, record) => {
         const month = new Date(record.date).toLocaleString('default', { month: 'short' });
         acc[month] = (acc[month] || 0) + 1;
@@ -70,7 +70,7 @@ export default function Dashboard() {
         }))
       );
 
-      // Prepare daily trend data
+      // Preparar datos para la tendencia diaria
       const dailyData = records.reduce((acc, record) => {
         const date = new Date(record.date).toISOString().slice(0, 10);
         acc[date] = acc[date] || { date, present: 0, absent: 0 };
@@ -118,7 +118,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Charts */}
+      {/* Gráficos Estilo */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="bg-white shadow rounded-lg p-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">Distribución de Asistencias</h2>
@@ -157,7 +157,7 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Daily Trends */}
+      {/* Gráfico Diario */}
       <div className="bg-white shadow rounded-lg p-6">
         <h2 className="text-lg font-semibold text-gray-900 mb-4">Tendencias Diarias</h2>
         <ResponsiveContainer width="100%" height={300}>

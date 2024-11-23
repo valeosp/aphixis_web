@@ -59,7 +59,7 @@ export default function AttendancePage() {
     fetchAttendance();
   }, []);
 
-  // Efecto para filtrar registros cuando cambia la búsqueda o los registros
+  //  filtrar los registros 
   useEffect(() => {
     const filtered = filterRecords().filter(record =>
       record.studentName.toLowerCase().includes(searchQuery.toLowerCase()) ||
